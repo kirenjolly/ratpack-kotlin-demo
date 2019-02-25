@@ -6,5 +6,6 @@ class ApplicationModule constructor(val serverConfig: ServerConfig): AbstractMod
     override fun configure() {
         install(BraveTracingModule(serverConfig))
         bind(InitialHandler::class.java).`in`(Scopes.SINGLETON)
+        bind(RouterChain::class.java).`in`(Scopes.SINGLETON)
     }
 }

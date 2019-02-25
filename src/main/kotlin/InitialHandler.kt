@@ -11,17 +11,7 @@ open class InitialHandler @Inject constructor(val httpTracing: HttpTracing): Han
     override fun handle(ctx: Context) {
         val log = LoggerFactory.getLogger(InitialHandler::class.java)
         val initialSpan = httpTracing.tracing().tracer().currentSpan()
-        val registry = Supplier{Execution.current()}
         log.info("InitialSpan: {}",initialSpan)
-        val tracingPropagationExecInitializer = TracingPropagationExecInitializer()
-        Execution.fork().start {
-            tracingPropagationExecInitializer.init(Execution.current())
-            val contextHttpTracing = registry.get().maybeGet(HttpTracing::class.java).isPresent
-            log.info("HttpTracing class in child registry: {}",contextHttpTracing)
-        }
-        val contextHttpTracing = registry.get().maybeGet(HttpTracing::class.java).isPresent
-        log.info("HttpTracing class in parent registry: {}",contextHttpTracing)
-        log.info("CurrentExecution: {}",Execution.current().toString())
-        ctx.response.send("Service value: traced")
+        ctx.next()
     }
 }

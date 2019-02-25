@@ -12,6 +12,6 @@ fun app(bindings: List<Any> = listOf()) = ratpack {
         module(ApplicationModule(serverConfig))
     }
     handlers {
-        path("main",InitialHandler::class.java)
+        prefix("main",RouterChain::class.java)
     }
 }
